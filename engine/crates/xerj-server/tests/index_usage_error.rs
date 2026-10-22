@@ -1,7 +1,3 @@
-//! #1818: `xerj index --file <dir>` must refuse with a usage error before
-//! any state is written — matches the #1586 shape of the sibling
-//! `xerj autoindex` command (exit 2, empty stdout, two-line stderr).
-
 use std::process::Command;
 
 #[test]
@@ -37,8 +33,6 @@ fn xerj_index_refuses_a_directory_before_touching_disk() {
     assert!(lines[0].contains("xerj autoindex"), "{stderr}");
     assert!(lines[1].contains("xerj index --help"), "{stderr}");
 
-    // Headline fix: pre-#1818 the data dir and an empty index were already
-    // on disk by the time `mmap` failed.
     assert!(
         !data_dir.exists(),
         "a refused --file must not create the data dir: {}",
